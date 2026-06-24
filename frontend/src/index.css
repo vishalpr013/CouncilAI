@@ -1,0 +1,59 @@
+@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400;1,600&display=swap');
+
+@import "tailwindcss";
+
+@layer base {
+  body {
+    @apply bg-[#080808] text-[#eaeaea] font-sans antialiased;
+  }
+  
+  /* Markdown styling inside prose class */
+  .prose h1, .prose h2, .prose h3 {
+    @apply font-serif text-[#d97736] mt-6 mb-3 font-semibold;
+  }
+  .prose h2 {
+    @apply text-xl border-b border-[#262626] pb-2;
+  }
+  .prose p {
+    @apply mb-4 leading-relaxed text-neutral-300;
+  }
+  .prose ul {
+    @apply list-disc list-inside mb-4 pl-4 text-neutral-300;
+  }
+  .prose ol {
+    @apply list-decimal list-inside mb-4 pl-4 text-neutral-300;
+  }
+  .prose li {
+    @apply mb-1;
+  }
+  .prose strong {
+    @apply text-white font-semibold;
+  }
+  .prose table {
+    @apply w-full text-sm border-collapse my-6;
+  }
+  .prose th, .prose td {
+    @apply border border-[#262626] p-3 text-left;
+  }
+  .prose th {
+    @apply bg-neutral-900/50 text-[#d97736] font-semibold;
+  }
+}
+
+/* Custom scrollbars */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+::-webkit-scrollbar-track {
+  background: #080808;
+}
+::-webkit-scrollbar-thumb {
+  background: #1f1f1f;
+  border-radius: 9999px;
+  transition: all 0.2s ease;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #d97736;
+}
