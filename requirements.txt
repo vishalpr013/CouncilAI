@@ -5,3 +5,5 @@ langsmith
 python-dotenv
 fastapi 
 langchain-google-genai
+mcp
+langchain-mcp-adapters
