@@ -1,0 +1,22 @@
+# Environment variables
+.env
+.env.local
+
+# Python cache and temporary files
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# Virtual environments
+.venv/
+venv/
+ENV/
+env/
+
+# IDE files
+.vscode/
+.idea/
+
+understand.md
+devmind_plan.md
