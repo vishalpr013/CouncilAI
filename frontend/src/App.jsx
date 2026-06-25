@@ -1,6 +1,16 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { marked } from 'marked';
 import Chart from 'react-apexcharts';
+
+const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:8000';
+const getWsUrl = () => {
+  if (API_URL.startsWith('https://')) {
+    return API_URL.replace('https://', 'wss://') + '/ws';
+  } else if (API_URL.startsWith('http://')) {
+    return API_URL.replace('http://', 'ws://') + '/ws';
+  }
+  return 'ws://localhost:8000/ws';
+};
 import { 
   Search, 
   TrendingUp, 
@@ -61,7 +71,7 @@ export default function App() {
     if (!result?.ticker) return;
     setRecalcLoading(true);
     try {
-      const response = await fetch('http://localhost:8000/api/dcf-recalculate', {
+      const response = await fetch(`${API_URL}/api/dcf-recalculate`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
@@ -124,7 +134,7 @@ export default function App() {
       socketRef.current.close();
     }
 
-    const ws = new WebSocket('ws://localhost:8000/ws');
+    const ws = new WebSocket(getWsUrl());
     socketRef.current = ws;
 
     ws.onopen = () => {
