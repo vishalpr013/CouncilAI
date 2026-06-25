@@ -9,14 +9,17 @@ def researcher(state):
     # Extract ticker using LLM for accuracy and reliability
     ticker_extraction = llm.invoke(
         f"Identify the primary publicly traded stock ticker symbol in the following query: '{question}'. "
-        "Respond ONLY with the uppercase ticker symbol (e.g. 'AAPL', 'NVDA', 'TSLA'). "
+        "Respond ONLY with the uppercase ticker symbol. For international stocks outside the US (e.g. India, UK), "
+        "include the exchange suffix (e.g., '.NS' for NSE India, '.BO' for BSE India, '.L' for London). "
+        "Examples: 'WAAREEENER.NS', 'RELIANCE.NS', 'AAPL', 'NVDA'. "
         "If no clear stock or company is mentioned, write 'NONE'."
     )
     ticker = ticker_extraction.content.strip().upper()
-    ticker = re.sub(r'[^A-Z]', '', ticker) # Strip any markdown or punctuation
+    # Strip markdown and standard punctuation, but preserve letters, numbers, and periods for suffixes
+    ticker = re.sub(r'[^A-Z0-9\.]', '', ticker)
 
     # Fallback/Default if extraction is none or invalid
-    if not ticker or ticker == "NONE" or len(ticker) > 5:
+    if not ticker or ticker == "NONE" or len(ticker) > 15:
         ticker = "AAPL" # Default fallback for demo stability
 
     # Fetch real financial metrics and news
@@ -41,9 +44,11 @@ def researcher(state):
     
     Based on the retrieved data, write a comprehensive Investment Research Memo for the company.
     In your report, analyze:
-    1. The company's recent stock price level, valuation metrics (P/E, PEG), and business summary.
-    2. Revenue, Net Income, and Free Cash Flow trends over the past 4 years.
-    3. Qualitative factors from recent news.
+    1. The company's recent stock price level, valuation metrics (P/E, PEG), and core business summary (including segment revenues such as networking/software vs. hardware compute if discussed in profile or news).
+    2. Revenue, Net Income, and Free Cash Flow trends over the past 4 years. Identify growth drivers or margin pressures.
+    3. Supply chain and manufacturing profile: Highlight single-source dependencies (e.g., TSMC or advanced packaging bottlenecks) and manufacturing locations.
+    4. Geopolitical and regulatory risks: Specifically note export controls (such as restrictions on China) or other compliance/legal constraints.
+    5. Qualitative factors from recent news and market sentiment.
     
     Provide a well-structured Markdown report. Do not calculate the DCF value yourself; the Valuation Analyst will compute it programmatically.
     """
